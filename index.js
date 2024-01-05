@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 app.get('/', function (req, res) {
   // Access the 'name' environment variable directly
   const name = process.env.name;
-
+console.log(name);
   // Check if the 'name' variable is set
   if (name) {
     res.send(`Hello, ${name}!`);
