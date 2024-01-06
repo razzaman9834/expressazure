@@ -1,5 +1,4 @@
 
-//mongodb://myazuretesting:27UqwL7Z3fWWv1duwKCh4j0YDiA36ZALQKj1OU1VXFqL7H27xs4Un8OHpBzgeqgj6GpVGSrKH6HmACDb18N3GA%3D%3D@myazuretesting.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@myazuretesting@
 require('dotenv').config()
 const mongoose = require('mongoose');
 const express = require('express');
@@ -56,6 +55,17 @@ app.get('/test/:name', (req, res) => {
   res.json({
     "1": "Aman",
     "2": param
+  });
+});
+
+
+app.get('/testenv', (req, res) => {
+  // Access the value from the environment variable
+  const envValue = process.env.ENVVAL;
+
+  res.json({
+    "1": "Aman",
+    "2": envValue
   });
 });
 
