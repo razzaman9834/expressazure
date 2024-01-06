@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 const port = process.env.PORT || 3000;
-app.get('/test22', function (req, res) {
+app.get('/test', function (req, res) {
   // Access the 'name' environment variable directly
 
   // Check if the 'name' variable is set
