@@ -14,14 +14,7 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-const credential = new DefaultAzureCredential();
 
-const keyVaultName = "testsecretdb0106";
-const url = "https://" + keyVaultName + ".vault.azure.net";
-const secretName = "test";
-
-
-const client = new SecretClient(url, credential);
 
 const secret = await client.getSecret(secretName);
 console.log("secret: ", secret);
@@ -110,6 +103,14 @@ app.get('/testenv', (req, res) => {
 
 
 app.get('/testsecret',async (req, res) => {
+  const credential = new DefaultAzureCredential();
+
+const keyVaultName = "testsecretdb0106";
+const url = "https://" + keyVaultName + ".vault.azure.net";
+const secretName = "test";
+
+
+const client = new SecretClient(url, credential);
 const secret = await client.getSecret(secretName);
 
   res.json({
