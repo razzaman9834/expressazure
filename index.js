@@ -4,8 +4,7 @@ const express = require('express');
 const multer = require('multer');
 const { EmailClient } = require("@azure/communication-email");
 const azureStorage = require('azure-storage');
-const { SecretClient } = require('@azure/keyvault-secrets');
-const { DefaultAzureCredential } = require('@azure/identity');
+
 
 const app = express();
 
@@ -101,26 +100,7 @@ app.get('/testenv', (req, res) => {
 });
 
 
-app.get('/testsecret', async (req, res) => {
-  try {
-      const credential = new DefaultAzureCredential();
 
-      const keyVaultName = "testsecretdb0106";
-      const url = "https://" + keyVaultName + ".vault.azure.net";
-      const secretName = "test";
-
-      const client = new SecretClient(url, credential);
-      const secret = await client.getSecret(secretName);
-
-      res.json({
-          "1": "Aman",
-          "2": secret.value, // Retrieve the value property of the secret
-      });
-  } catch (error) {
-      console.error('Error:', error.message);
-      res.status(200).json({ error: 'Failed to retrieve secret from Azure Key Vault' });
-  }
-});
 
 // File upload endpoint
 app.post('/upload', upload.single('file'), (req, res) => {
