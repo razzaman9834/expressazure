@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "20.x"
+    "node": "15.x"
   },
   "dependencies": {
     "chai-http": "^4.4.0",
