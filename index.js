@@ -29,7 +29,7 @@ app.get('/tasks', async (req, res) => {
     const tasks = await Task.find();
     res.json(tasks);
   } catch (error) {
-    console.error('Error fetching tasks:', error.message);
+    console.error('Error fetching taskss:', error.message);
     res.status(500).send('Internal Server Error');
   }
 });
