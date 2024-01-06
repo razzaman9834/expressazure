@@ -55,7 +55,7 @@ app.get('/send-email', async (req, res) => {
     res.status(200).json({ message: 'Test email sent successfully!' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error', err:error });
   }
 });
 // Express route to fetch tasks from MongoDB
