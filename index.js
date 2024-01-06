@@ -4,11 +4,27 @@ const express = require('express');
 const multer = require('multer');
 const { EmailClient } = require("@azure/communication-email");
 const azureStorage = require('azure-storage');
+
+const { SecretClient } = require("@azure/keyvault-secrets");
+const { DefaultAzureCredential } = require("@azure/identity");
+
 const app = express();
 
 app.use(express.json());
 
 const port = process.env.PORT || 3000;
+
+const credential = new DefaultAzureCredential();
+
+const keyVaultName = "testsecretdb0106";
+const url = "https://" + keyVaultName + ".vault.azure.net";
+const secretName = "test";
+
+
+const client = new SecretClient(url, credential);
+
+const secret = await client.getSecret(secretName);
+console.log("secret: ", secret);
 
 const mongoURI = process.env.MONGO_DB;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -89,6 +105,16 @@ app.get('/testenv', (req, res) => {
   res.json({
     "1": "Aman",
     "2": envValue,
+  });
+});
+
+
+app.get('/testsecret',async (req, res) => {
+const secret = await client.getSecret(secretName);
+
+  res.json({
+    "1": "Aman",
+    "2": secret,
   });
 });
 
