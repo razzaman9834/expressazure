@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const multer = require('multer');
-const { SmsClient } = require('@azure/communication-sms');
+const { EmailClient } = require("@azure/communication-email");
 const azureStorage = require('azure-storage');
 const app = express();
 
@@ -30,32 +30,30 @@ const blobService = azureStorage.createBlobService(process.env.AZURE_STORAGE_CON
 
 // Replace these with your Azure Communication Services connection string
 const connectionString = process.env.EMAILCOMM;
-const smsClient = new SmsClient(connectionString);
 
 // Define an endpoint to send a test email
+const emailClient = new EmailClient(connectionString);
+
 app.get('/send-email', async (req, res) => {
   try {
-    const sendOptions = {
-      from: 'DoNotReply@cc573b44-d35b-434a-9f93-f91636463ad7.azurecomm.net', // Replace with your email address
-      to: ['razzaman9834@gmail.com'], // Replace with recipient email address
-      subject: 'Test Email',
-      body: 'This is a test email sent from your Express app using Azure Email service!',
+    const emailMessage = {
+      senderAddress: 'DoNotReply@cc573b44-d35b-434a-9f93-f91636463ad7.azurecomm.net',
+      content: {
+        subject: 'Test Email',
+        plainText: 'Hello world via email.',
+      },
+      recipients: {
+        to: [{ address: 'razzaman9834@gmail.com' }],
+      },
     };
 
-    // Send the email
-    await smsClient.send({
-      smsRecipients: [{ to: sendOptions.to[0] }],
-      from: sendOptions.from,
-      message: {
-        subject: sendOptions.subject,
-        body: [{ content: sendOptions.body }],
-      },
-    });
+    const poller = await emailClient.beginSend(emailMessage);
+    await poller.pollUntilDone();
 
-    res.status(200).json({ message: 'Test email sent successfully!' });
+    res.send('Email sent successfully');
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Internal Server Error', err:error });
+    res.status(500).send('Internal Server Error');
   }
 });
 // Express route to fetch tasks from MongoDB
